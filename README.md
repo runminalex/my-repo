@@ -1,2 +1,1 @@
-# my-repo
-A hello world website
+# My Repo\n\n## Contributors\n\n- Alex
