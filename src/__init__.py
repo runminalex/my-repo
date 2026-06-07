@@ -1,4 +1,4 @@
-"""Calculator package.
+"""Calculator and Statistics package.
 
 Provides:
 - Calculator: basic and scientific arithmetic operations
