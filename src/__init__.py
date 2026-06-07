@@ -5,7 +5,7 @@ Provides:
 - Statistics: descriptive statistical operations
 """
 
-from src.calculator import Calculator
-from src.stats import Statistics
+from .calculator import Calculator
+from .stats import Statistics
 
 __all__ = ["Calculator", "Statistics"]
