@@ -18,7 +18,6 @@ Usage:
 
 import argparse
 import sys
-import math
 from src.calculator import Calculator
 
 
@@ -31,37 +30,25 @@ def create_parser() -> argparse.ArgumentParser:
 
     subparsers = parser.add_subparsers(dest="operation", help="Operation to perform")
 
-    # Basic arithmetic operations
+    # Basic arithmetic operations (two operands)
     for op in ["add", "subtract", "multiply", "divide", "power", "modulus"]:
         sub = subparsers.add_parser(op, help=f"{op.capitalize()} two numbers")
         sub.add_argument("a", type=float, help="First operand")
         sub.add_argument("b", type=float, help="Second operand")
 
-    # Scientific operations
-    sub = subparsers.add_parser("sqrt", help="Square root of a number")
-    sub.add_argument("value", type=float, help="Number to compute square root of")
-
-    sub = subparsers.add_parser("factorial", help="Factorial of a number")
-    sub.add_argument("value", type=int, help="Non-negative integer for factorial")
-
-    for op in ["sin", "cos", "tan"]:
-        sub = subparsers.add_parser(op, help=f"{op.capitalize()} of an angle (in radians)")
-        sub.add_argument("value", type=float, help="Angle in radians")
-
-    sub = subparsers.add_parser("log", help="Logarithm (base 10) of a number")
-    sub.add_argument("value", type=float, help="Positive number")
-
-    sub = subparsers.add_parser("ln", help="Natural logarithm of a number")
-    sub.add_argument("value", type=float, help="Positive number")
+    # Scientific operations (single operand)
+    for op in ["sqrt", "factorial", "sin", "cos", "tan", "log", "ln"]:
+        sub = subparsers.add_parser(op, help=f"{op.capitalize()} of a number")
+        sub.add_argument("value", type=float, help="Input value")
 
     return parser
 
 
-def run(args: argparse.Namespace | None = None) -> str:
+def run(parsed: argparse.Namespace | None = None) -> str:
     """Run the calculator CLI with parsed arguments.
 
     Args:
-        args: Parsed command-line arguments. If None, parses sys.argv.
+        parsed: Parsed command-line arguments. If None, parses sys.argv.
 
     Returns:
         The result as a string.
@@ -71,10 +58,8 @@ def run(args: argparse.Namespace | None = None) -> str:
     """
     parser = create_parser()
 
-    if args is None:
+    if parsed is None:
         parsed = parser.parse_args()
-    else:
-        parsed = args
 
     if not parsed.operation:
         parser.print_help()
@@ -82,35 +67,40 @@ def run(args: argparse.Namespace | None = None) -> str:
 
     calc = Calculator()
 
-    basic_ops = {
-        "add": calc.add,
-        "subtract": calc.subtract,
-        "multiply": calc.multiply,
-        "divide": calc.divide,
-        "power": calc.power,
-        "modulus": calc.modulus,
+    # Map operations to Calculator methods
+    op_map: dict[str, tuple] = {
+        "add": (calc.add, ["a", "b"]),
+        "subtract": (calc.subtract, ["a", "b"]),
+        "multiply": (calc.multiply, ["a", "b"]),
+        "divide": (calc.divide, ["a", "b"]),
+        "power": (calc.power, ["a", "b"]),
+        "modulus": (calc.modulus, ["a", "b"]),
+        "sqrt": (calc.sqrt, ["value"]),
+        "factorial": (calc.factorial, ["value"]),
+        "sin": (calc.sin, ["value"]),
+        "cos": (calc.cos, ["value"]),
+        "tan": (calc.tan, ["value"]),
+        "log": (calc.log10, ["value"]),
+        "ln": (calc.ln, ["value"]),
     }
 
-    if parsed.operation in basic_ops:
-        result = basic_ops[parsed.operation](parsed.a, parsed.b)
-        return str(result)
+    if parsed.operation not in op_map:
+        parser.print_help()
+        raise SystemExit(1)
 
-    scientific_ops = {
-        "sqrt": lambda v: math.sqrt(v),
-        "factorial": lambda v: math.factorial(v),
-        "sin": lambda v: math.sin(v),
-        "cos": lambda v: math.cos(v),
-        "tan": lambda v: math.tan(v),
-        "log": lambda v: math.log10(v),
-        "ln": lambda v: math.log(v),
-    }
+    func, param_names = op_map[parsed.operation]
 
-    if parsed.operation in scientific_ops:
-        result = scientific_ops[parsed.operation](parsed.value)
-        return str(result)
+    if len(param_names) == 2:
+        args_list = [getattr(parsed, param_names[0]), getattr(parsed, param_names[1])]
+    else:
+        args_list = [getattr(parsed, param_names[0])]
 
-    parser.print_help()
-    raise SystemExit(1)
+    result = func(*args_list)
+
+    # Format result — int if no fractional part
+    if isinstance(result, float) and result == int(result):
+        return str(int(result))
+    return str(result)
 
 
 def main() -> None:
