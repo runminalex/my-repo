@@ -1,5 +1,7 @@
 """Tests for the Calculator scientific operations and CLI module."""
 
+import math
+import argparse
 import pytest
 from src.calculator import Calculator
 from src.cli import create_parser, run
@@ -79,7 +81,7 @@ class TestCalculatorScientific:
 
     def test_chained_operations(self, calc):
         """Test that basic and scientific operations compose correctly."""
-        result = calc.sin(calc.sqrt(calc.power(calc.pi / 2, 2)))
+        result = calc.sin(calc.sqrt(calc.power(math.pi / 2, 2)))
         assert result == pytest.approx(1.0, rel=1e-9)
 
 
