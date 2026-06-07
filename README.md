@@ -1,1 +1,3 @@
-# My Repo\n\n## Contributors\n\n- Alex
+# Test Repo
+
+This is a test repository.
