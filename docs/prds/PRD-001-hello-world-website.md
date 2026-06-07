@@ -4,15 +4,15 @@
 Approved
 
 ## Goal
-Create a simple "Hello, World!" website served via Python's built-in HTTP server for the multi-agent GitOps pipeline demonstration.
+Create a simple "Hello, World!" static website served via Python's built-in HTTP server.
 
 ## Requirements
-- Serve a static HTML page displaying "Hello, World!" greeting
-- Use Python's stdlib only (no external dependencies)
-- Provide a simple shell script to launch the server
-- Bind to localhost only (127.0.0.1) for security
+1. A single `index.html` page displaying "Hello, World!"
+2. Server using Python 3's built-in `http.server` module
+3. Simple one-command launch script
+4. No external dependencies
 
 ## Success Criteria
-1. Navigate to http://127.0.0.1:8080
-2. Page displays "Hello, World!" heading
-3. `./run.sh` starts the server without errors
+- Running `./run.sh` starts the server on `http://127.0.0.1:8080`
+- Opening the URL shows a webpage with "Hello, World!" greeting
+- Server stops cleanly with Ctrl+C
