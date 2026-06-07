@@ -40,8 +40,8 @@ class Statistics:
     def mode(self, data: Sequence[float]) -> list[float]:
         """Return the mode(s) of the data set (most frequent value(s)).
 
-        If multiple values have the same highest frequency, all are returned.
-        Returns an empty list if the data set is empty.
+        If multiple values have the same highest frequency, all are returned
+        as a sorted list.
 
         Raises:
             ValueError: If the data set is empty.
@@ -71,8 +71,8 @@ class Statistics:
                 f"Cannot compute variance with ddof={ddof} on a data set of size {n}"
             )
 
-        μ = self.mean(data)
-        return sum((x - μ) ** 2 for x in data) / (n - ddof)
+        mu = self.mean(data)
+        return sum((x - mu) ** 2 for x in data) / (n - ddof)
 
     def standard_deviation(self, data: Sequence[float], ddof: int = 0) -> float:
         """Return the standard deviation of the data set.
@@ -134,7 +134,7 @@ class Statistics:
         # Q2 is the median
         q2 = self.median(sorted_data)
 
-        # Split into lower and upper halves (inclusive of median)
+        # Split into lower and upper halves (exclusive of median for odd n)
         if n % 2 == 1:
             # Odd count: exclude the median from both halves
             lower = sorted_data[: n // 2]
