@@ -1,1 +1,3 @@
-# My Repo\n\n## Contributors\n\n- Alex
+# My Repo
+
+Test/scratch repository for Nephalem Hermes GitOps Framework.
