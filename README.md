@@ -93,7 +93,7 @@ data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 print(stats.mean(data))              # 5.5
 print(stats.median(data))            # 5.5
-print(stats.mode(data))              # [1.0, 2.0, ..., 10.0]
+print(stats.mode(data))              # [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
 print(stats.variance(data))          # 8.25 (population variance)
 print(stats.standard_deviation(data)) # 2.872 (population std)
 print(stats.min(data))               # 1.0
