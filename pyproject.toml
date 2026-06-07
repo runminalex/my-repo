@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "my-repo-calculator"
+version = "0.1.0"
+description = "Calculator module with tests"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=7.0",
+]
+
+[project.urls]
+Repository = "https://github.com/runminalex/my-repo"
